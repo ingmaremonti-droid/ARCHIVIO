@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Archivio pratiche</title>
+<link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#2563eb">
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--tx:#1a1d23;--mu:#6b7280;--gr:#aab0ba;--bd:#e2e5ea}
+@media(prefers-color-scheme:dark){:root{--bg:#14161a;--card:#1e2127;--tx:#eceef2;--mu:#9aa1ad;--gr:#4a505a;--bd:#2c3038}}
+*{box-sizing:border-box}
+body{margin:0;font:16px system-ui,sans-serif;background:var(--bg);color:var(--tx);padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+header,main{max-width:900px;margin:0 auto;padding:12px 14px}
+h1{font-size:20px;margin:4px 0 10px}
+input,select,button{font:inherit;color:inherit}
+#q{width:100%;padding:12px 14px;border:1px solid var(--bd);border-radius:10px;background:var(--card)}
+.tb{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+button{border:1px solid var(--bd);background:var(--card);border-radius:10px;padding:8px 12px;cursor:pointer}
+.arms{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:14px}
+.arm{--f:var(--gr);position:relative;width:92px;height:116px;border:0;border-radius:8px;background:var(--f);color:#fff;padding:0}
+.arm.on{--f:var(--c)}
+.arm i{position:absolute;inset:8px;border:2px solid rgba(255,255,255,.55);border-radius:4px;background:linear-gradient(90deg,transparent calc(50% - 1px),rgba(255,255,255,.55) 0 calc(50% + 1px),transparent 0)}
+.arm b{position:absolute;left:0;right:0;top:34px;font-size:34px}
+.arm small{position:absolute;left:0;right:0;bottom:14px;font-size:12px}
+.arm.new{background:transparent;border:2px dashed var(--gr);color:var(--mu);font-size:32px}
+.sec{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px;margin-bottom:12px}
+.sec h2{font-size:16px;margin:0 0 10px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.sec h2 span{display:flex;gap:6px;flex-wrap:wrap}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{--f:var(--gr);min-width:56px;border:0;background:var(--f);color:#fff;border-radius:8px;padding:8px 10px;font-weight:600}
+.chip.on{--f:var(--c)}
+.chip small{display:block;font-weight:400;font-size:11px;opacity:.9}
+.row{display:flex;align-items:center;gap:8px;padding:10px 0;border-top:1px solid var(--bd)}
+.row:first-of-type{border-top:0}
+.row div{flex:1;min-width:0}.row span{color:var(--mu);font-size:14px}
+.tag{font-size:12px;padding:3px 8px;border-radius:99px;background:var(--c);color:#fff;white-space:nowrap}
+.mu{color:var(--mu)}
+dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);color:var(--tx);width:min(92vw,380px)}
+label{display:block;font-size:13px;color:var(--mu);margin-bottom:10px}
+label input,label select{display:block;width:100%;margin-top:4px;padding:10px;border:1px solid var(--bd);border-radius:8px;background:var(--bg)}
+.bt{display:flex;gap:8px;justify-content:flex-end}
+.pr{background:#2563eb;color:#fff;border-color:#2563eb}
+#lock{display:none}
+body.locked #lock{display:flex;min-height:100vh;align-items:center;justify-content:center;padding:20px}
+body.locked header,body.locked main{display:none}
+.lk{width:min(100%,360px);background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:20px}
+.lk button{width:100%;margin-top:6px}.er{color:#dc2626;min-height:20px;font-size:14px;margin-bottom:6px}.sm{font-size:12px;margin:12px 0 0}
+.lnk{border:0;background:none;color:#2563eb;text-decoration:underline}
+.tag.out{background:#dc2626}
+#toast{display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom));background:#1f2937;color:#fff;padding:10px 14px;border-radius:10px;z-index:20;box-shadow:0 4px 14px #0005;white-space:nowrap}
+#toast button{margin-left:8px;background:#2563eb;color:#fff;border:0}
+#pa{display:none}
+@media print{body>*:not(#pa){display:none!important}body{background:#fff!important;padding:0}#pa{display:block;color:#000;font-family:system-ui,sans-serif}#pa h1{font-size:28px;margin:0 0 4px}#pa table{width:100%;border-collapse:collapse;margin-top:12px}#pa td,#pa th{border:1px solid #999;padding:6px 8px;text-align:left;font-size:14px}}
+</style></head><body class="locked">
+<div id="lock"><div class="lk"><h1 id="lk-t">Accedi</h1>
+<label>Email<input id="lk-u" type="email" autocomplete="username"></label>
+<label>Password<input id="lk-p" type="password" autocomplete="current-password"></label>
+<div id="lk-e" class="er"></div><button id="lk-go" class="pr">Accedi</button><button id="lk-fp" class="lnk">Password dimenticata?</button>
+<p class="mu sm">I dati si sincronizzano tra i tuoi dispositivi e restano disponibili anche senza internet. Il primo accesso su ogni dispositivo richiede la connessione.</p></div></div>
+<header><h1>Archivio pratiche</h1>
+<input id="q" type="search" placeholder="Cerca cognome o pratica…" autocomplete="off">
+<div class="tb"><button data-act="exp">Esporta</button><button data-act="imp">Importa</button><button data-act="out" id="bout">Fuori archivio</button><button data-act="tr" id="btr">Cestino</button><button data-act="pw">Cambia password</button><button data-act="lock">Esci</button><span id="st" class="mu sm"></span><input id="file" type="file" accept=".csv,text/csv" hidden></div></header>
+<main><div id="arm" class="arms"></div><div id="det"></div></main>
+<div id="pa"></div><div id="toast"></div>
+<dialog id="dlg"><div>
+<label>Cognome<input id="fc"></label><label>Pratica<input id="fn"></label>
+<label>Armadio<select id="fa"></select></label><label>Faldone<input id="ff"></label>
+<div class="bt"><button id="no">Annulla</button><button id="ok" class="pr">Salva</button></div></div></dialog>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import {getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged,sendPasswordResetEmail} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import {initializeFirestore,persistentLocalCache,persistentMultipleTabManager,collection,doc,onSnapshot,setDoc,addDoc,updateDoc,deleteDoc,arrayUnion,arrayRemove,writeBatch} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+const firebaseConfig={apiKey:"AIzaSyCHn2-nkqRjj8--T-0EvQ3G269TBBbEk44",authDomain:"archivio-35bb3.firebaseapp.com",projectId:"archivio-35bb3",storageBucket:"archivio-35bb3.firebasestorage.app",messagingSenderId:"373154340934",appId:"1:373154340934:web:e064151e7a69a97fdc2a47"};
+const app=initializeApp(firebaseConfig),auth=getAuth(app);auth.languageCode="it";
+const db=initializeFirestore(app,{localCache:persistentLocalCache({tabManager:persistentMultipleTabManager()})});
+const COL=["#2563eb","#16a34a","#ea580c","#9333ea","#db2777","#0891b2","#ca8a04","#dc2626"];
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const nat=(a,b)=>String(a).localeCompare(String(b),"it",{numeric:true});
+let S=null,uid=null,AD=[],P=[],un=[],selA=null,selF=null,q="",editId=null,warned=false,view=null,undo=null,tt=null;
+const cl=n=>collection(db,"utenti",uid,n),rf=(n,id)=>doc(db,"utenti",uid,n,id);
+function rebuild(){S={armadi:[...new Set([...AD.map(x=>x.name),...P.map(x=>x.a)])].sort(nat),vuoti:Object.fromEntries(AD.map(x=>[x.name,x.vuoti])),p:P.filter(x=>!x.del)};render()}
+const fail=e=>{console.error(e);if(!warned){warned=true;alert("Impossibile leggere i dati ("+e.code+"). Controlla le regole di Firestore.")}};
+function startSync(){un=[
+ onSnapshot(cl("pratiche"),sn=>{P=sn.docs.map(d=>({id:d.id,c:"",n:"",a:"",f:"",fuori:"",dal:0,del:0,...d.data()}));const old=P.filter(x=>x.del&&Date.now()-x.del>2592e6).map(x=>x.id);if(old.length)delMany(old);rebuild()},fail),
+ onSnapshot(cl("armadi"),sn=>{AD=sn.docs.map(d=>({name:d.id,vuoti:d.data().vuoti||[]}));rebuild()},fail)]}
+function stopSync(){un.forEach(f=>f());un=[];AD=[];P=[]}
+onAuthStateChanged(auth,u=>{
+ stopSync();
+ if(u){uid=u.uid;S={armadi:[],vuoti:{},p:[]};startSync();document.body.classList.remove("locked");render()}
+ else{uid=S=null;selA=selF=null;q="";$("#q").value="";document.body.classList.add("locked")}
+});
+async function doLogin(){
+ const e=$("#lk-u").value.trim(),p=$("#lk-p").value,err=m=>{$("#lk-e").textContent=m};
+ if(!e||!p){err("Inserisci email e password.");return}
+ err("");
+ try{await signInWithEmailAndPassword(auth,e,p);$("#lk-p").value=""}
+ catch(x){err(x.code==="auth/network-request-failed"?"Nessuna connessione: il primo accesso richiede internet.":"Email o password errati.")}
+}
+$("#lk-go").onclick=doLogin;
+$("#lk-fp").onclick=async()=>{const e=$("#lk-u").value.trim(),err=m=>{$("#lk-e").textContent=m};
+ if(!e){err("Scrivi la tua email nel campo sopra, poi premi di nuovo.");return}
+ try{await sendPasswordResetEmail(auth,e);err("");alert("Se l’email è registrata, riceverai un messaggio con il link per scegliere una nuova password. Controlla anche la posta indesiderata.")}
+ catch(x){err("Impossibile inviare l’email: controlla l’indirizzo e la connessione.")}};
+for(const id of ["#lk-u","#lk-p"])$(id).addEventListener("keydown",e=>{if(e.key==="Enter")doLogin()});
+const st=()=>{$("#st").textContent=navigator.onLine?"":"Offline"};addEventListener("online",st);addEventListener("offline",st);st();
+const col=a=>COL[Math.max(0,S.armadi.indexOf(a))%COL.length];
+const cnt=a=>S.p.filter(x=>x.a===a).length;
+const fald=a=>[...new Set([...S.p.filter(x=>x.a===a).map(x=>x.f),...(S.vuoti[a]||[])])].sort(nat);
+const hits=()=>{const t=q.trim().toLowerCase();return t?S.p.filter(x=>(x.c+" "+x.n).toLowerCase().includes(t)):null};
+const dt=t=>t?new Date(t).toLocaleDateString("it-IT"):"";
+const badge=x=>x.fuori?`<span class="tag out">Fuori: ${esc(x.fuori)} · dal ${dt(x.dal)}</span>`:"";
+function outHtml(){const L=S.p.filter(x=>x.fuori).sort((a,b)=>a.dal-b.dal);
+ return `<div class="sec"><h2>Pratiche fuori archivio (${L.length})</h2>`+(L.length?L.map(x=>`<div class="row"><div>${esc(x.c)}<br><span>${esc(x.n)}</span><br>${badge(x)}<br><span>Armadio ${esc(x.a)} · Faldone ${esc(x.f)}</span></div><button data-act="rt" data-v="${x.id}">Rientrata</button></div>`).join(""):`<span class="mu">Nessuna pratica fuori archivio.</span>`)+`</div>`}
+function trashHtml(){const L=P.filter(x=>x.del).sort((a,b)=>b.del-a.del);
+ return `<div class="sec"><h2>Cestino (${L.length})<span>${L.length?`<button data-act="et">Svuota</button>`:""}</span></h2><p class="mu sm">Le pratiche restano nel cestino 30 giorni, poi vengono eliminate definitivamente.</p>`+(L.length?L.map(x=>`<div class="row"><div>${esc(x.c)}<br><span>${esc(x.n)} · Armadio ${esc(x.a)} · Faldone ${esc(x.f)}<br>Eliminata il ${dt(x.del)}</span></div><button data-act="rp" data-v="${x.id}">Ripristina</button><button data-act="dd" data-v="${x.id}">✕</button></div>`).join(""):`<span class="mu">Il cestino è vuoto.</span>`)+`</div>`}
+function setMany(ids,data){for(let i=0;i<ids.length;i+=400){const b=writeBatch(db);ids.slice(i,i+400).forEach(id=>b.update(rf("pratiche",id),data));b.commit().catch(console.error)}}
+const trash=ids=>setMany(ids,{del:Date.now()}),restore=ids=>setMany(ids,{del:0});
+function toast(m,fn){undo=fn;const t=$("#toast");t.innerHTML=`${esc(m)} <button data-act="undo">Annulla</button>`;t.style.display="block";clearTimeout(tt);tt=setTimeout(()=>{t.style.display="none";undo=null},8000)}
+function render(){
+ const H=hits(),ha=new Set((H||[]).map(x=>x.a));
+ let h="";
+ for(const a of S.armadi){const on=H?ha.has(a):(!view&&selA===a);
+  h+=`<button class="arm${on?" on":""}" style="--c:${col(a)}" data-act="a" data-v="${esc(a)}"><i></i><b>${esc(a)}</b><small>${cnt(a)} pratiche</small></button>`}
+ h+=`<button class="arm new" data-act="na" title="Nuovo armadio">+</button>`;
+ $("#arm").innerHTML=h;
+ let d="";
+ if(H){
+  d=`<div class="sec"><h2>${H.length} risultati</h2>`+H.slice(0,100).map(x=>`<div class="row" data-act="r" data-v="${x.id}"><div>${esc(x.c)}<br><span>${esc(x.n)}</span> ${badge(x)}</div><span class="tag" style="--c:${col(x.a)}">Armadio ${esc(x.a)} · Faldone ${esc(x.f)}</span></div>`).join("")+`</div>`;
+ }else if(view==="out"){d=outHtml()}else if(view==="trash"){d=trashHtml()}else if(selA){
+  const fl=fald(selA);
+  d=`<div class="sec" style="--c:${col(selA)}"><h2>Armadio ${esc(selA)}<span><button data-act="nf">+ Faldone</button> <button data-act="da">Elimina armadio</button></span></h2><div class="chips">`+
+   (fl.length?fl.map(f=>`<button class="chip${selF===f?" on":""}" data-act="f" data-v="${esc(f)}">${esc(f)}<small>${S.p.filter(x=>x.a===selA&&x.f===f).length}</small></button>`).join(""):`<span class="mu">Nessun faldone: aggiungine uno.</span>`)+`</div></div>`;
+  if(selF!==null){
+   const L=S.p.filter(x=>x.a===selA&&x.f===selF);
+   d+=`<div class="sec" style="--c:${col(selA)}"><h2>Faldone ${esc(selF)}<span><button data-act="np">+ Pratica</button> <button data-act="pr">Stampa</button> <button data-act="df">Elimina faldone</button></span></h2>`+
+    (L.length?L.map(x=>`<div class="row"><div>${esc(x.c)}<br><span>${esc(x.n)}</span> ${badge(x)}</div><button data-act="${x.fuori?"rt":"ex"}" data-v="${x.id}">${x.fuori?"Rientrata":"Esce"}</button><button data-act="ep" data-v="${x.id}">✎</button><button data-act="dp" data-v="${x.id}">✕</button></div>`).join(""):`<span class="mu">Faldone vuoto.</span>`)+`</div>`;
+  }
+ }else d=`<p class="mu">${S.p.length?"Tocca un armadio per aprirlo, oppure cerca un cognome.":"L’archivio è vuoto: tocca Importa e scegli il file CSV delle pratiche."}</p>`;
+ $("#det").innerHTML=d;
+ $("#bout").textContent="Fuori archivio ("+S.p.filter(x=>x.fuori).length+")";$("#btr").textContent="Cestino ("+P.filter(x=>x.del).length+")";
+}
+function openDlg(id){
+ editId=id;const x=S.p.find(p=>p.id===id)||{c:"",n:"",a:selA||S.armadi[0],f:selF||""};
+ $("#fa").innerHTML=S.armadi.map(a=>`<option${a===x.a?" selected":""}>${esc(a)}</option>`).join("");
+ $("#fc").value=x.c;$("#fn").value=x.n;$("#ff").value=x.f;$("#dlg").showModal();
+}
+$("#no").onclick=()=>$("#dlg").close();
+$("#ok").onclick=()=>{
+ const c=$("#fc").value.trim(),n=$("#fn").value.trim(),a=$("#fa").value,f=$("#ff").value.trim();
+ if(!a||!f||(!c&&!n)){alert("Inserisci almeno cognome o pratica, e il faldone.");return}
+ const d={c,n,a,f};
+ (editId?updateDoc(rf("pratiche",editId),d):addDoc(cl("pratiche"),d)).catch(console.error);
+ selA=a;selF=f;$("#dlg").close();render();
+};
+function parse(t){t=t.replace(/^\ufeff/,"");const d=t.split("\n")[0].includes(";")?";":",";const rows=[];let r=[],c="",qt=false;
+ for(let i=0;i<t.length;i++){const ch=t[i];
+  if(qt){if(ch==='"'){if(t[i+1]==='"'){c+='"';i++}else qt=false}else c+=ch}
+  else if(ch==='"')qt=true;else if(ch===d){r.push(c);c=""}
+  else if(ch==="\n"||ch==="\r"){if(ch==="\r"&&t[i+1]==="\n")i++;r.push(c);c="";rows.push(r);r=[]}else c+=ch}
+ if(c||r.length){r.push(c);rows.push(r)}return rows}
+function delMany(ids){for(let i=0;i<ids.length;i+=400){const b=writeBatch(db);ids.slice(i,i+400).forEach(id=>b.delete(rf("pratiche",id)));b.commit().catch(console.error)}}
+const A={
+ a:v=>{selA=selA===v?null:v;selF=null;view=null},
+ f:v=>{selF=selF===v?null:v},
+ r:v=>{const x=S.p.find(p=>p.id===v);selA=x.a;selF=x.f;view=null;q="";$("#q").value=""},
+ na:()=>{const n=(prompt("Nome del nuovo armadio (es. D)")||"").trim();if(!n)return;
+  if(n.includes("/")){alert("Il nome non può contenere «/».");return}
+  if(S.armadi.includes(n)){alert("Esiste già un armadio con questo nome.");return}
+  setDoc(rf("armadi",n),{vuoti:[]}).catch(console.error);selA=n;selF=null;view=null;q="";$("#q").value=""},
+ nf:()=>{const n=(prompt("Numero del nuovo faldone")||"").trim();if(!n)return;
+  if(!fald(selA).includes(n))setDoc(rf("armadi",selA),{vuoti:arrayUnion(n)},{merge:true}).catch(console.error);selF=n},
+ da:()=>{const a=selA,L=S.p.filter(x=>x.a===a),ids=L.map(x=>x.id),vu=(S.vuoti[a]||[]).slice(),n=fald(a).length;
+  if(L.length){if(prompt("L’armadio "+a+" contiene "+L.length+" pratiche in "+n+" faldoni. Andranno nel cestino per 30 giorni.\n\nPer confermare scrivi il nome dell’armadio:")!==a)return}
+  else if(!confirm("Eliminare l’armadio "+a+"?"))return;
+  trash(ids);deleteDoc(rf("armadi",a)).catch(console.error);selA=selF=null;
+  toast("Armadio "+a+" eliminato",()=>{restore(ids);setDoc(rf("armadi",a),{vuoti:vu}).catch(console.error);selA=a})},
+ df:()=>{const a=selA,f=selF,ids=S.p.filter(x=>x.a===a&&x.f===f).map(x=>x.id);
+  if(!confirm("Eliminare il faldone "+f+(ids.length?" e le sue "+ids.length+" pratiche":"")+"? Le pratiche andranno nel cestino per 30 giorni."))return;
+  trash(ids);setDoc(rf("armadi",a),{vuoti:arrayRemove(f)},{merge:true}).catch(console.error);selF=null;
+  toast("Faldone "+f+" eliminato",()=>{restore(ids);setDoc(rf("armadi",a),{vuoti:arrayUnion(f)},{merge:true}).catch(console.error);selA=a;selF=f})},
+ dp:v=>{trash([v]);toast("Pratica eliminata",()=>restore([v]))},
+ ex:v=>{const n=(prompt("Chi prende la pratica?")||"").trim();if(n)updateDoc(rf("pratiche",v),{fuori:n,dal:Date.now()}).catch(console.error)},
+ rt:v=>{updateDoc(rf("pratiche",v),{fuori:"",dal:0}).catch(console.error)},
+ out:()=>{view=view==="out"?null:"out"},
+ tr:()=>{view=view==="trash"?null:"trash"},
+ rp:v=>restore([v]),
+ dd:v=>{if(confirm("Eliminare definitivamente questa pratica?"))delMany([v])},
+ et:()=>{const ids=P.filter(x=>x.del).map(x=>x.id);if(ids.length&&confirm("Eliminare definitivamente le "+ids.length+" pratiche nel cestino?"))delMany(ids)},
+ undo:()=>{const f=undo;undo=null;$("#toast").style.display="none";if(f)f()},
+ pr:()=>{const L=S.p.filter(x=>x.a===selA&&x.f===selF).sort((a,b)=>nat(a.c,b.c));
+  $("#pa").innerHTML=`<h1>Armadio ${esc(selA)} · Faldone ${esc(selF)}</h1><p>${L.length} pratiche · stampato il ${dt(Date.now())}</p><table><tr><th>Cognome</th><th>Pratica</th></tr>`+L.map(x=>`<tr><td>${esc(x.c)}</td><td>${esc(x.n)}${x.fuori?" (fuori: "+esc(x.fuori)+")":""}</td></tr>`).join("")+`</table>`;
+  window.print()},
+ np:()=>openDlg(null),
+ ep:v=>openDlg(v),
+ exp:()=>{const csv=["Cognome;Pratica;Armadio;Numero",...S.p.map(x=>[x.c,x.n,x.a,x.f].map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(";"))].join("\r\n");
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv"}));a.download="archivio-pratiche.csv";a.click()},
+ imp:()=>$("#file").click(),
+ pw:()=>{const e=auth.currentUser&&auth.currentUser.email;if(!e||!confirm("Inviare a "+e+" il link per cambiare la password?"))return;
+  sendPasswordResetEmail(auth,e).then(()=>alert("Email inviata a "+e+".")).catch(()=>alert("Invio non riuscito: controlla la connessione."))},
+ lock:()=>{signOut(auth)}
+};
+document.addEventListener("click",e=>{const t=e.target.closest("[data-act]");if(!t)return;A[t.dataset.act](t.dataset.v);if(S)render()});
+$("#q").addEventListener("input",e=>{q=e.target.value;if(S)render()});
+$("#file").addEventListener("change",async e=>{
+ const f=e.target.files[0];if(!f)return;
+ const key=x=>[x.c,x.n,x.a,x.f].join("|"),have=new Set(S.p.map(key));
+ const rows=parse(await f.text()).slice(1).filter(r=>r[2]&&r[3]).map(r=>({c:r[0].trim(),n:r[1].trim(),a:r[2].trim(),f:r[3].trim()})).filter(x=>!have.has(key(x)));
+ e.target.value="";
+ if(!rows.length){alert("Nessuna pratica nuova da importare.");return}
+ if(!confirm("Importare "+rows.length+" pratiche nuove?"))return;
+ for(let i=0;i<rows.length;i+=400){const b=writeBatch(db);rows.slice(i,i+400).forEach(x=>b.set(doc(cl("pratiche")),x));b.commit().catch(console.error)}
+});
+if("serviceWorker" in navigator&&location.protocol.startsWith("http"))navigator.serviceWorker.register("sw.js").catch(()=>{});
+</script></body></html>
